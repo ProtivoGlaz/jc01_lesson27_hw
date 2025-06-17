@@ -3,35 +3,35 @@ package com.example.jc.repository.impl;
 import com.example.jc.model.Course;
 import com.example.jc.model.Person;
 import com.example.jc.model.Student;
-import com.example.jc.repository.DaoException;
-import com.example.jc.repository.Repository;
+import com.example.jc.repository.RepositoryException;
+import com.example.jc.repository.CourseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MemoryCourseRepository implements Repository {
+public class MemoryCourseRepository implements CourseRepository {
     private final Map<String, Course> storage = new ConcurrentHashMap<>();
 
     @Override
-    public void saveCourse(Course course) throws DaoException {
+    public void saveCourse(Course course) throws RepositoryException {
         if (storage.containsKey(course.getName())) {
-            throw new DaoException("Course exists: " + course.getName());
+            throw new RepositoryException("Course exists: " + course.getName());
         }
         storage.put(course.getName(), course);
     }
 
     @Override
-    public void update(Course course) throws DaoException {
+    public void update(Course course) throws RepositoryException {
         if (!storage.containsKey(course.getName())) {
-            throw new DaoException("No such course: " + course.getName());
+            throw new RepositoryException("No such course: " + course.getName());
         }
         storage.put(course.getName(), course);
     }
 
     @Override
-    public void delete(String courseName) throws DaoException {
+    public void delete(String courseName) throws RepositoryException {
         storage.remove(courseName);
     }
 

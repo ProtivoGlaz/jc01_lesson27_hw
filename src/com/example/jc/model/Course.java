@@ -3,12 +3,19 @@ package com.example.jc.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class Course {
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+
     private final String name;
     private final List<Person> participants = new ArrayList<>();
 
     public Course(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Course name cannot be null or blank");
+        }
         this.name = name;
     }
 
@@ -17,10 +24,25 @@ public class Course {
     }
 
     public boolean addParticipant(Person person) {
-        for (Person p : participants) {
-            if (p.getEmail().equals(person.getEmail())) return false;
+        String email = person.getEmail();
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email format: " + email);
+        }
+
+        if (hasDuplicateEmail(email)) {
+            return false;
         }
         return participants.add(person);
+    }
+
+    private boolean hasDuplicateEmail(String email) {
+        return participants.stream()
+                .map(Person::getEmail)
+                .anyMatch(email::equals);
+    }
+
+    private static boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 
     public void conductLesson() {
@@ -50,7 +72,9 @@ public class Course {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Course course = (Course) o;
         return Objects.equals(name, course.name) &&
                 Objects.equals(participants, course.participants);

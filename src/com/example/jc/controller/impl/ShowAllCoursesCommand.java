@@ -1,19 +1,19 @@
 package com.example.jc.controller.impl;
 
 import com.example.jc.controller.Command;
-import com.example.jc.controller.ControllerException;
+import com.example.jc.controller.CourseControllerException;
 import com.example.jc.model.Course;
 import com.example.jc.service.CourseServiceProvider;
-import com.example.jc.service.Service;
+import com.example.jc.service.CourseService;
 import com.example.jc.service.ServiceException;
 
 import java.util.List;
 
 public class ShowAllCoursesCommand implements Command {
-    private final Service service = CourseServiceProvider.getInstance().getService();
+    private final CourseService service = CourseServiceProvider.getInstance().getService();
 
     @Override
-    public String execute(String request) throws ControllerException {
+    public String execute(String request) throws CourseControllerException {
         try {
             List<Course> list = service.getAllCourses();
             if (list.isEmpty()) {
@@ -25,7 +25,7 @@ public class ShowAllCoursesCommand implements Command {
             }
             return sb.toString();
         } catch (ServiceException e) {
-            throw new ControllerException("Failed to list courses", e);
+            throw new CourseControllerException("Failed to list courses", e);
         }
     }
 }

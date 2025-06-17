@@ -6,13 +6,13 @@ import com.example.jc.repository.impl.MemoryCourseRepository;
 public class CourseRepositoryProvider {
     private static final CourseRepositoryProvider instance = new CourseRepositoryProvider();
 
-    private final Repository repository = new FileCourseRepository();
+    private final CourseRepository repository = new FileCourseRepository();
     //private final Repository repository = new MemoryCourseRepository();
 
     private CourseRepositoryProvider() {
     }
 
-    public Repository getRepository() {
+    public CourseRepository getRepository() {
         return repository;
     }
 

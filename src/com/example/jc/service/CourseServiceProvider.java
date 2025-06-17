@@ -1,15 +1,13 @@
 package com.example.jc.service;
 
-import com.example.jc.service.impl.CourseService;
-
 public class CourseServiceProvider {
     private static final CourseServiceProvider instance = new CourseServiceProvider();
 
-    private final Service service = new CourseService();
+    private final CourseService service = new com.example.jc.service.impl.CourseService();
 
     private CourseServiceProvider() {}
 
-    public Service getService() {
+    public CourseService getService() {
         return service;
     }
 

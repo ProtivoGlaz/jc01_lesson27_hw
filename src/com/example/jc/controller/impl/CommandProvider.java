@@ -9,7 +9,7 @@ import java.util.Map;
 public class CommandProvider {
     private final Map<CommandName, Command> repository = new HashMap<>();
 
-    CommandProvider() {
+    public CommandProvider() {
         repository.put(CommandName.CREATE_COURSE, new CreateCourseCommand());
         repository.put(CommandName.ADD_PARTICIPANT, new AddParticipantCommand());
         repository.put(CommandName.SHOW_ALL_COURSES, new ShowAllCoursesCommand());
@@ -17,7 +17,7 @@ public class CommandProvider {
         repository.put(CommandName.WRONG_REQUEST, new NoSuchCommand());
     }
 
-    Command getCommand(String name) {
+    public Command getCommand(String name) {
         CommandName commandName = null;
         Command command = null;
 

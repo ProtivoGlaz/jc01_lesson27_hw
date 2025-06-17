@@ -1,20 +1,20 @@
 package com.example.jc.controller.impl;
 
 import com.example.jc.controller.Command;
-import com.example.jc.controller.ControllerException;
+import com.example.jc.controller.CourseControllerException;
 import com.example.jc.model.*;
 import com.example.jc.service.CourseServiceProvider;
-import com.example.jc.service.Service;
+import com.example.jc.service.CourseService;
 import com.example.jc.service.ServiceException;
 
 import java.util.List;
 import java.util.Optional;
 
 public class AddParticipantCommand implements Command {
-    private final Service service = CourseServiceProvider.getInstance().getService();
+    private final CourseService service = CourseServiceProvider.getInstance().getService();
 
     @Override
-    public String execute(String request) throws ControllerException {
+    public String execute(String request) throws CourseControllerException {
         String[] params = request.split("\n");
         if (params.length < 4) {
             return "ERROR: insufficient parameters";
@@ -54,7 +54,7 @@ public class AddParticipantCommand implements Command {
                     }
                     person = new Administrator(params[3], params[4], params[5]);
                 }
-                default -> throw new ControllerException("Unknown role: " + role);
+                default -> throw new CourseControllerException("Unknown role: " + role);
             }
 
             boolean added = course.addParticipant(person);
@@ -65,7 +65,7 @@ public class AddParticipantCommand implements Command {
             return role + " added successfully";
 
         } catch (ServiceException e) {
-            throw new ControllerException("Failed to add participant", e);
+            throw new CourseControllerException("Failed to add participant", e);
         } catch (NumberFormatException nfe) {
             return "ERROR: invalid number format for grade";
         }
